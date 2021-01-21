@@ -38,3 +38,13 @@ zc706/src/verilog/AsyncResetReg.v
 zc706/src/verilog/plusarg_reader.v
 zc706/deliver_output
 zc706/soft_build
+
+zcu106/soft_config/*.bsp
+zcu106/soft_config/rocketchip_wrapper*
+zcu106/zcu106_rocketchip_ZynqConfig
+zcu106/petalinux_proj
+zcu106/rootfs
+zcu106/fpga-images-zcu106/BOOT.BIN
+zcu106/fpga-images-zcu106/image.ub
+zcu106/fpga-images-zcu106/rootfs.cpio.gz
+zcu106/fpga-images-zcu106/initramfs.cpio.gz
