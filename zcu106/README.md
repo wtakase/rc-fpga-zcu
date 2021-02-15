@@ -135,9 +135,11 @@ CONFIG_TMP_DIR_LOCATION="/home/zynq/zcu106_riscv/rc-fpga-zcu/zcu106/petalinux_pr
 [zynq@zynqbuild01 build]$ ../configure --prefix=$RISCV --host=riscv64-unknown-linux-gnu --with-payload=/home/zynq/zcu106_riscv/freedom-u-sdk/work/linux/vmlinux
 [zynq@zynqbuild01 build]$ make -j7
 [zynq@zynqbuild01 build]$ make install
-[zynq@zynqbuild01 build]$ cd ~/zcu106_riscv/rc-fpga-zcu/zcu106/
+[zynq@zynqbuild01 build]$ cd ~/zcu106_riscv/rc-fpga-zcu/common/
+[zynq@zynqbuild01 common]$ ~/zcu106_riscv/riscv-toolchain/bin/riscv64-unknown-elf-gcc -g hello.c -o hello
+[zynq@zynqbuild01 common]$ cd ../zcu106/
 [zynq@zynqbuild01 zcu106]$ make rootfs-open
-[zynq@zynqbuild01 zcu106]$ sudo cp ../common/build/fesvr-zynq ../common/build/libfesvr.so ../rocket-chip/riscv-tools/riscv-pk/build/bbl rootfs/home/root/
+[zynq@zynqbuild01 zcu106]$ sudo cp ../common/build/fesvr-zynq ../common/build/libfesvr.so ../rocket-chip/riscv-tools/riscv-pk/build/bbl ../rocket-chip/riscv-tools/riscv-pk/build/pk ../common/hello rootfs/home/root/
 [zynq@zynqbuild01 zcu106]$ make rootfs-close
 
 
@@ -212,6 +214,11 @@ takase@ubuntu20:/mnt$ sudo pax -r -f rootfs.cpio
 takase@ubuntu20:/mnt$ cd
 takase@ubuntu20:~$ sudo umount /mnt
 takase@ubuntu20:~$ sudo screen -L /dev/ttyUSB0 115200 
+
+
+root@xilinx-zcu106-2020_1:~# LD_LIBRARY_PATH=./ ./fesvr-zynq pk hello
+load_elf hello
+Hello World!
 
 
 root@xilinx-zcu106-2020_1:~# LD_LIBRARY_PATH=./ ./fesvr-zynq bbl
