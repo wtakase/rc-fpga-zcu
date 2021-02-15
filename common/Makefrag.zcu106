@@ -143,7 +143,8 @@ $(exported_files) :
 	cp -v $(proj_name)/$(proj_name).runs/impl_1/rocketchip_wrapper.bit $(config_dir)/
 	cp -v $(proj_name)/$(proj_name).runs/impl_1/rocketchip_wrapper.sysdef $(config_dir)/rocketchip_wrapper.hdf
 
-kernel_image = $(pl_output_dir)/BOOT.BIN $(pl_output_dir)/image.ub
+#kernel_image = $(pl_output_dir)/BOOT.BIN $(pl_output_dir)/image.ub
+kernel_image = $(pl_output_dir)/BOOT.BIN
 
 pl_setup :
 	source $(PL_PATH)/settings.sh

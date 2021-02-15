@@ -158,7 +158,7 @@ proc create_root_design { parentCell } {
   set_property -dict [ list \
 CONFIG.ADDR_WIDTH {32} \
 CONFIG.DATA_WIDTH {32} \
-CONFIG.FREQ_HZ {180000000} \
+CONFIG.FREQ_HZ {100000000} \
 CONFIG.PROTOCOL {AXI4} \
  ] $M_AXI
   set S_AXI [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:aximm_rtl:1.0 S_AXI ]
@@ -168,7 +168,7 @@ CONFIG.ARUSER_WIDTH {0} \
 CONFIG.AWUSER_WIDTH {0} \
 CONFIG.BUSER_WIDTH {0} \
 CONFIG.DATA_WIDTH {64} \
-CONFIG.FREQ_HZ {180000000} \
+CONFIG.FREQ_HZ {100000000} \
 CONFIG.HAS_BRESP {1} \
 CONFIG.HAS_BURST {1} \
 CONFIG.HAS_CACHE {1} \
@@ -196,10 +196,10 @@ CONFIG.WUSER_WIDTH {0} \
 
   # Create ports
   set FCLK_RESET0_N [ create_bd_port -dir O -type rst FCLK_RESET0_N ]
-  set ext_clk_in [ create_bd_port -dir I -type clk ext_clk_in ]
+  set ext_clk_in [ create_bd_port -dir I -type clk -freq_hz 100000000 ext_clk_in ]
   set_property -dict [ list \
 CONFIG.ASSOCIATED_BUSIF {S_AXI:M_AXI} \
-CONFIG.FREQ_HZ {180000000} \
+CONFIG.FREQ_HZ {100000000} \
  ] $ext_clk_in
   set interrupt [ create_bd_port -dir O -type intr interrupt ]
 
@@ -340,6 +340,9 @@ CONFIG.PSU__DDRC__T_RC {47.06} \
 CONFIG.PSU__DDRC__T_RCD {15} \
 CONFIG.PSU__DDRC__T_RP {15} \
 CONFIG.PSU__DDRC__VREF {1} \
+CONFIG.PSU__DISPLAYPORT__LANE0__ENABLE {0} \
+CONFIG.PSU__DISPLAYPORT__LANE1__ENABLE {1} \
+CONFIG.PSU__DISPLAYPORT__LANE1__IO {GT Lane0} \
 CONFIG.PSU__DISPLAYPORT__PERIPHERAL__ENABLE {1} \
 CONFIG.PSU__DPAUX__PERIPHERAL__ENABLE {1} \
 CONFIG.PSU__DPAUX__PERIPHERAL__IO {MIO 27 .. 30} \
@@ -368,19 +371,6 @@ CONFIG.PSU__IOU_SLCR__IOU_TTC_APB_CLK__TTC3_SEL {APB} \
 CONFIG.PSU__MAXIGP0__DATA_WIDTH {32} \
 CONFIG.PSU__MAXIGP2__DATA_WIDTH {32} \
 CONFIG.PSU__OVERRIDE__BASIC_CLOCK {0} \
-CONFIG.PSU__PCIE__BAR0_ENABLE {0} \
-CONFIG.PSU__PCIE__CLASS_CODE_BASE {0x06} \
-CONFIG.PSU__PCIE__CLASS_CODE_SUB {0x4} \
-CONFIG.PSU__PCIE__CRS_SW_VISIBILITY {1} \
-CONFIG.PSU__PCIE__DEVICE_ID {0xD021} \
-CONFIG.PSU__PCIE__DEVICE_PORT_TYPE {Root Port} \
-CONFIG.PSU__PCIE__LANE1__ENABLE {0} \
-CONFIG.PSU__PCIE__LINK_SPEED {5.0 Gb/s} \
-CONFIG.PSU__PCIE__MAXIMUM_LINK_WIDTH {x1} \
-CONFIG.PSU__PCIE__PERIPHERAL__ENABLE {1} \
-CONFIG.PSU__PCIE__PERIPHERAL__ROOTPORT_IO {MIO 31} \
-CONFIG.PSU__PCIE__REF_CLK_FREQ {100} \
-CONFIG.PSU__PCIE__REF_CLK_SEL {Ref Clk0} \
 CONFIG.PSU__PMU__GPI0__ENABLE {0} \
 CONFIG.PSU__PMU__GPI1__ENABLE {0} \
 CONFIG.PSU__PMU__GPI2__ENABLE {0} \
@@ -457,12 +447,16 @@ CONFIG.PSU__USE__S_AXI_GP3 {1} \
   create_bd_addr_seg -range 0x00001000 -offset 0xA0000000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs M_AXI/Reg] SEG_M_AXI_Reg
   create_bd_addr_seg -range 0x20000000 -offset 0x00000000 [get_bd_addr_spaces S_AXI] [get_bd_addr_segs processing_system7_0/SAXIGP3/HP1_DDR_LOW] SEG_processing_system7_0_HP1_DDR_LOW
   create_bd_addr_seg -range 0x01000000 -offset 0xFF000000 [get_bd_addr_spaces S_AXI] [get_bd_addr_segs processing_system7_0/SAXIGP3/HP1_LPS_OCM] SEG_processing_system7_0_HP1_LPS_OCM
-  create_bd_addr_seg -range 0x10000000 -offset 0xE0000000 [get_bd_addr_spaces S_AXI] [get_bd_addr_segs processing_system7_0/SAXIGP3/HP1_PCIE_LOW] SEG_processing_system7_0_HP1_PCIE_LOW
+  #create_bd_addr_seg -range 0x10000000 -offset 0xE0000000 [get_bd_addr_spaces S_AXI] [get_bd_addr_segs processing_system7_0/SAXIGP3/HP1_PCIE_LOW] SEG_processing_system7_0_HP1_PCIE_LOW
   create_bd_addr_seg -range 0x20000000 -offset 0xC0000000 [get_bd_addr_spaces S_AXI] [get_bd_addr_segs processing_system7_0/SAXIGP3/HP1_QSPI] SEG_processing_system7_0_HP1_QSPI
 
 
   # Restore current instance
   current_bd_instance $oldCurInst
+
+  apply_bd_automation -rule xilinx.com:bd_rule:zynq_ultra_ps_e -config {apply_board_preset "1" }  [get_bd_cells processing_system7_0]
+
+  set_property -dict [list CONFIG.PSU__USE__M_AXI_GP1 {0}] [get_bd_cells processing_system7_0]
 
   save_bd_design
 }

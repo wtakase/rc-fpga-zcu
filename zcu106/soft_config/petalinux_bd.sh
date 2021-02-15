@@ -17,7 +17,7 @@ cd $proj_dir
 cp -v $gen_config $proj_dir/project-spec/configs/
 #FIX the hardcoded path
 sed -i "s@FIXME_PLDIR@$proj_dir@g" $proj_dir/project-spec/configs/config
-petalinux-config --get-hw-description=$config_dir #--silentconfig
+petalinux-config --get-hw-description=$config_dir --silentconfig
 #copy config file to the folder and replace the default config file
 cp -v $rootfs_config $proj_dir/project-spec/configs/
 #load petalinux_config

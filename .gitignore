@@ -48,3 +48,4 @@ zcu106/fpga-images-zcu106/BOOT.BIN
 zcu106/fpga-images-zcu106/image.ub
 zcu106/fpga-images-zcu106/rootfs.cpio.gz
 zcu106/fpga-images-zcu106/initramfs.cpio.gz
+zcu106/fpga-images-zcu106/boot.scr
