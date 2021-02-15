@@ -212,4 +212,7 @@ takase@ubuntu20:/mnt$ sudo pax -r -f rootfs.cpio
 takase@ubuntu20:/mnt$ cd
 takase@ubuntu20:~$ sudo umount /mnt
 takase@ubuntu20:~$ sudo screen -L /dev/ttyUSB0 115200 
+
+
+root@xilinx-zcu106-2020_1:~# LD_LIBRARY_PATH=./ ./fesvr-zynq bbl
 ```
