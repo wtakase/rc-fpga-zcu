@@ -117,7 +117,9 @@ CONFIG_TMP_DIR_LOCATION="/home/zynq/zcu106_riscv/rc-fpga-zcu/zcu106/petalinux_pr
 [zynq@zynqbuild01 zcu106]$ cp petalinux_proj/images/linux/rootfs.cpio.gz fpga-images-zcu106/
 [zynq@zynqbuild01 zcu106]$ cp petalinux_proj/images/linux/boot.scr fpga-images-zcu106/
 [zynq@zynqbuild01 zcu106]$ make fesvr-zynq
-[zynq@zynqbuild01 zcu106]$ cd ~/zcu106_riscv/
+[zynq@zynqbuild01 zcu106]$ cd ../common/
+[zynq@zynqbuild01 common]$ ~/zcu106_riscv/riscv-toolchain/bin/riscv64-unknown-elf-gcc -g hello.c -o hello
+[zynq@zynqbuild01 common]$ cd ~/zcu106_riscv/
 [zynq@zynqbuild01 zcu106_riscv]$ git clone https://github.com/sifive/freedom-u-sdk 
 [zynq@zynqbuild01 zcu106_riscv]$ cd freedom-u-sdk/
 [zynq@zynqbuild01 freedom-u-sdk]$ unset RISCV
@@ -128,6 +130,7 @@ CONFIG_TMP_DIR_LOCATION="/home/zynq/zcu106_riscv/rc-fpga-zcu/zcu106/petalinux_pr
 [zynq@zynqbuild01 buildroot]$ cd ..
 [zynq@zynqbuild01 freedom-u-sdk]$ cp ~/zcu106_riscv/rc-fpga-zcu/zcu106/soft_config/config_freedom conf/linux_defconfig 
 [zynq@zynqbuild01 freedom-u-sdk]$ unset LD_LIBRARY_PATH
+[zynq@zynqbuild01 freedom-u-sdk]$ cp ~/zcu106_riscv/rc-fpga-zcu/common/hello work/buildroot_initramfs_sysroot/root/
 [zynq@zynqbuild01 freedom-u-sdk]$ make vmlinux -j7
 [zynq@zynqbuild01 freedom-u-sdk]$ cd ~/zcu106_riscv/rc-fpga-zcu/rocket-chip/riscv-tools/riscv-pk/build/
 [zynq@zynqbuild01 build]$ . ~/.bashrc
@@ -135,9 +138,7 @@ CONFIG_TMP_DIR_LOCATION="/home/zynq/zcu106_riscv/rc-fpga-zcu/zcu106/petalinux_pr
 [zynq@zynqbuild01 build]$ ../configure --prefix=$RISCV --host=riscv64-unknown-linux-gnu --with-payload=/home/zynq/zcu106_riscv/freedom-u-sdk/work/linux/vmlinux
 [zynq@zynqbuild01 build]$ make -j7
 [zynq@zynqbuild01 build]$ make install
-[zynq@zynqbuild01 build]$ cd ~/zcu106_riscv/rc-fpga-zcu/common/
-[zynq@zynqbuild01 common]$ ~/zcu106_riscv/riscv-toolchain/bin/riscv64-unknown-elf-gcc -g hello.c -o hello
-[zynq@zynqbuild01 common]$ cd ../zcu106/
+[zynq@zynqbuild01 build]$ cd ~/zcu106_riscv/rc-fpga-zcu/zcu106/
 [zynq@zynqbuild01 zcu106]$ make rootfs-open
 [zynq@zynqbuild01 zcu106]$ sudo cp ../common/build/fesvr-zynq ../common/build/libfesvr.so ../rocket-chip/riscv-tools/riscv-pk/build/bbl ../rocket-chip/riscv-tools/riscv-pk/build/pk ../common/hello rootfs/home/root/
 [zynq@zynqbuild01 zcu106]$ make rootfs-close
@@ -222,4 +223,8 @@ Hello World!
 
 
 root@xilinx-zcu106-2020_1:~# LD_LIBRARY_PATH=./ ./fesvr-zynq bbl
+# ls
+hello
+# ./hello 
+Hello World!
 ```
